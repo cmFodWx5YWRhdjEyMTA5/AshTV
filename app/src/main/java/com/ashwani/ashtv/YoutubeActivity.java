@@ -35,10 +35,71 @@ public class YoutubeActivity extends YouTubeBaseActivity
         playerView.initialize(GOOGLE_API_KEY, this);
     }
 
+    private YouTubePlayer.PlaybackEventListener playbackEventListener = new YouTubePlayer.PlaybackEventListener() {
+        @Override
+        public void onPlaying() {
+            Toast.makeText(YoutubeActivity.this, "The Video is playing ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPaused() {
+            Toast.makeText(YoutubeActivity.this, "The Video is paused  ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStopped() {
+            Toast.makeText(YoutubeActivity.this, "The Video has Stopped ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onBuffering(boolean b) {
+
+        }
+
+        @Override
+        public void onSeekTo(int i) {
+
+        }
+    };
+    private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
+        @Override
+        public void onLoading() {
+
+        }
+
+        @Override
+        public void onLoaded(String s) {
+
+        }
+
+        @Override
+        public void onAdStarted() {
+            Toast.makeText(YoutubeActivity.this, "Click ad now, make the video creator Rich!! ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onVideoStarted() {
+            Toast.makeText(YoutubeActivity.this, "The Video has started ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onVideoEnded() {
+            Toast.makeText(YoutubeActivity.this, "Congratulations! You have completed another video ", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+        }
+    };
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         Log.d(TAG, "onInitializationSuccess:  provider is " + provider.getClass().toString());
         Toast.makeText(this, "Initialized Youtube Player successfully", Toast.LENGTH_LONG).show();
+
+        youTubePlayer.setPlaybackEventListener(playbackEventListener);
+        youTubePlayer.setPlayerStateChangeListener(playerStateChangeListener);
 
         if(!wasRestored) {
             youTubePlayer.cueVideo(YOUTUBE_VIDEO_ID);
@@ -56,6 +117,5 @@ public class YoutubeActivity extends YouTubeBaseActivity
             String errorMessage = String.format("There was an error initializing the YoutubePlayer (%1$s)", youTubeInitializationResult.toString());
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         }
-
     }
 }
